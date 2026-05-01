@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, ArrowLeft, Loader2 } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth.jsx'
+import logo from '../assets/logo.svg'
 
 export default function AuthPage() {
   const { signInWithGoogle, signInWithMagicLink } = useAuth()
@@ -36,7 +37,10 @@ export default function AuthPage() {
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-ink p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #C45C3A 0%, transparent 60%), radial-gradient(circle at 70% 80%, #2A6B8A 0%, transparent 50%)' }} />
-        <Link to="/" className="font-display text-3xl italic text-paper relative z-10">Wandr</Link>
+        <Link to="/" className="flex items-center gap-3 relative z-10">
+          <img src={logo} alt="Wandr Logo" className="w-8 h-8 brightness-0 invert" />
+          <span className="font-display text-3xl italic text-paper">Wandr</span>
+        </Link>
         <div className="relative z-10">
           <blockquote className="font-display text-4xl font-light italic text-paper/80 leading-tight mb-6">
             "The world is a book, and those who do not travel read only one page."

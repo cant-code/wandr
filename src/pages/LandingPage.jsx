@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import { Sparkles, Users, Lock } from 'lucide-react'
+import logo from '../assets/logo.svg'
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-paper overflow-hidden">
       {/* Nav */}
       <nav className="flex items-center justify-between px-8 py-6 border-b border-sand">
-        <span className="font-display text-2xl italic text-ink">Wandr</span>
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logo} alt="Wandr Logo" className="w-8 h-8" />
+          <span className="font-display text-2xl italic text-ink">Wandr</span>
+        </Link>
         <div className="flex items-center gap-6">
           <Link to="/auth" className="font-body text-sm text-ink/60 hover:text-ink transition-colors">Sign in</Link>
           <Link to="/auth" className="btn-primary text-sm py-2 px-5">Get started</Link>
@@ -62,7 +66,10 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-sand px-8 py-6 flex items-center justify-between">
-        <span className="font-display text-lg italic text-ink/40">Wandr</span>
+        <div className="flex items-center gap-2">
+          <img src={logo} alt="Wandr Logo" className="w-6 h-6 grayscale opacity-40" />
+          <span className="font-display text-lg italic text-ink/40">Wandr</span>
+        </div>
         <span className="font-mono text-xs text-ink/30">Built with React + Firebase</span>
       </footer>
     </div>

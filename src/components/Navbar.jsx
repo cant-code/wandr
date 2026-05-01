@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Settings, LogOut, Plus, Map } from 'lucide-react'
+import { Settings, LogOut, Plus } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth.jsx'
+import logo from '../assets/logo.svg'
 
 export default function Navbar({ onNewTrip }) {
   const { signOut } = useAuth()
@@ -13,8 +14,8 @@ export default function Navbar({ onNewTrip }) {
 
   return (
     <nav className="sticky top-0 z-40 bg-paper/90 backdrop-blur-sm border-b border-sand flex items-center justify-between px-6 py-4">
-      <Link to="/dashboard" className="flex items-center gap-3">
-        <Map size={18} className="text-terracotta" />
+      <Link to="/dashboard" className="flex items-center gap-2">
+        <img src={logo} alt="Wandr Logo" className="w-6 h-6" />
         <span className="font-display text-xl italic text-ink">Wandr</span>
       </Link>
 
