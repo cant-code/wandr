@@ -59,6 +59,13 @@ export function hasValidKey(provider) {
   return key && key.length > 10
 }
 
+const GEMINI_MODELS = [
+  'gemini-flash-latest',
+  'gemini-2.5-flash',
+  'gemini-3.1-flash-lite-preview',
+  'gemini-2.5-flash-lite'
+];
+
 // ── Core call function ──────────────────────────────────────────────────────
 
 async function callAI(systemPrompt, userPrompt) {
@@ -127,25 +134,39 @@ async function callAnthropic(key, systemPrompt, userPrompt) {
 }
 
 async function callGemini(key, systemPrompt, userPrompt) {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-        generationConfig: { response_mime_type: 'application/json', temperature: 0.8 },
-      }),
+  let lastError
+
+  for (const model of GEMINI_MODELS) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { response_mime_type: 'application/json', temperature: 0.8 },
+        }),
+      }
+    )
+
+    if (res.status === 429) {
+      const err = await res.json().catch(() => ({}))
+      lastError = new Error(err.error?.message || `Rate limited on ${model}`)
+      continue
     }
-  )
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err.error?.message || `Gemini error: ${res.status}`)
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.error?.message || `Gemini error: ${res.status}`)
+    }
+
+    const data = await res.json()
+    const text = data.candidates[0].content.parts[0].text
+    return JSON.parse(text)
   }
-  const data = await res.json()
-  const text = data.candidates[0].content.parts[0].text
-  return JSON.parse(text)
+
+  throw lastError ?? new Error('All Gemini models exhausted')
 }
 
 // ── Prompt builders ─────────────────────────────────────────────────────────

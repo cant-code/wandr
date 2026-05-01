@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, Loader2, Bot, User, Sparkles } from 'lucide-react'
-import { chatFollowUp } from '../../lib/ai'
+import { chatFollowUp } from '@/lib/ai.js'
 
 export default function ChatPanel({ tripContext, noKey }) {
   const [messages, setMessages] = useState([
@@ -42,7 +42,7 @@ export default function ChatPanel({ tripContext, noKey }) {
   ]
 
   return (
-    <div className="flex flex-col h-[600px] bg-white border border-sand">
+    <div className="flex flex-col h-150 bg-white border border-sand">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((msg, i) => (

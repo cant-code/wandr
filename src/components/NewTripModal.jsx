@@ -40,8 +40,9 @@ export default function NewTripModal({ onClose, onCreate }) {
         <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Destination *</label>
+              <label htmlFor="input-destination" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Destination *</label>
               <input
+                id="input-destination"
                 className="input-field"
                 placeholder="e.g. Lisbon"
                 value={form.destination}
@@ -50,40 +51,78 @@ export default function NewTripModal({ onClose, onCreate }) {
               />
             </div>
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Country</label>
-              <input className="input-field" placeholder="Portugal" value={form.country} onChange={e => set('country', e.target.value)} />
+              <label htmlFor="input-country" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Country</label>
+              <input
+                id="input-country"
+                className="input-field"
+                placeholder="Portugal"
+                value={form.country}
+                onChange={e => set('country', e.target.value)}
+              />
             </div>
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Flying from</label>
-              <input className="input-field" placeholder="New York" value={form.origin} onChange={e => set('origin', e.target.value)} />
+              <label htmlFor="input-origin" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Flying from</label>
+              <input
+                id="input-origin"
+                className="input-field"
+                placeholder="New York"
+                value={form.origin}
+                onChange={e => set('origin', e.target.value)}
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Start date</label>
-              <input type="date" className="input-field" value={form.start_date} onChange={e => set('start_date', e.target.value)} />
+              <label htmlFor="input-start" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Start date</label>
+              <input
+                id="input-start"
+                type="date"
+                className="input-field"
+                value={form.start_date}
+                onChange={e => set('start_date', e.target.value)}
+              />
             </div>
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">End date</label>
-              <input type="date" className="input-field" value={form.end_date} onChange={e => set('end_date', e.target.value)} />
+              <label htmlFor="input-end" className="block font-body text-sm font-medium text-ink/70 mb-1.5">End date</label>
+              <input
+                id="input-end"
+                type="date"
+                className="input-field"
+                value={form.end_date} onChange={e => set('end_date', e.target.value)}
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Budget</label>
-              <input className="input-field" placeholder="e.g. $2000" value={form.budget} onChange={e => set('budget', e.target.value)} />
+              <label htmlFor="input-budget" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Budget</label>
+              <input
+                id="input-budget"
+                className="input-field"
+                placeholder="e.g. $2000"
+                value={form.budget}
+                onChange={e => set('budget', e.target.value)}
+              />
             </div>
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Group size</label>
-              <input type="number" min={1} max={20} className="input-field" value={form.group_size} onChange={e => set('group_size', e.target.value)} />
+              <label htmlFor="input-group" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Group size</label>
+              <input
+                id="input-group"
+                type="number"
+                min={1}
+                max={20}
+                className="input-field"
+                value={form.group_size}
+                onChange={e => set('group_size', e.target.value)}
+              />
             </div>
           </div>
 
           <div>
-            <label className="block font-body text-sm font-medium text-ink/70 mb-1.5">Interests</label>
+            <label htmlFor="input-interests" className="block font-body text-sm font-medium text-ink/70 mb-1.5">Interests</label>
             <input
+              id="input-interests"
               className="input-field"
               placeholder="e.g. history, food, beaches, nightlife"
               value={form.interests}

@@ -4,7 +4,7 @@ import { useShareTrip } from '../hooks/useTrips.js'
 
 export default function ShareModal({ tripId, onClose }) {
   const { createShareLink } = useShareTrip(tripId)
-  const [permission, setPermission] = useState<Permission>('viewer')
+  const [permission, setPermission] = useState('viewer')
   const [link, setLink] = useState('')
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -68,9 +68,9 @@ export default function ShareModal({ tripId, onClose }) {
           {/* Link */}
           {link ? (
             <div>
-              <label className="block font-body text-sm font-medium text-ink/70 mb-2">Share link (expires in 7 days)</label>
+              <label htmlFor="copy" className="block font-body text-sm font-medium text-ink/70 mb-2">Share link (expires in 7 days)</label>
               <div className="flex items-center gap-2">
-                <input value={link} readOnly className="input-field text-xs flex-1 bg-sand/30" />
+                <input id="copy" value={link} readOnly className="input-field text-xs flex-1 bg-sand/30" />
                 <button onClick={copy} className="btn-primary py-3 px-4 shrink-0 flex items-center gap-2">
                   {copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy</>}
                 </button>

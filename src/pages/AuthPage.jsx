@@ -102,8 +102,9 @@ export default function AuthPage() {
 
               {/* Magic link */}
               <form onSubmit={handleMagicLink}>
-                <label className="block font-body text-sm font-medium text-ink/70 mb-2">Email address</label>
+                <label htmlFor="email" className="block font-body text-sm font-medium text-ink/70 mb-2">Email address</label>
                 <input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
