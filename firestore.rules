@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Check if user is a member of the trip
+    function isMember(tripId) {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/trip_members/$(tripId + '_' + request.auth.uid));
+    }
+
+    // 1. Trips Collection
+    match /trips/{tripId} {
+      // Allow read if user is the owner OR a member
+      allow read: if isAuthenticated() && (
+        resource.data.owner_id == request.auth.uid || isMember(tripId)
+      );
+      // Allow create if authenticated
+      allow create: if isAuthenticated();
+      // Allow update/delete only if owner
+      allow update, delete: if isAuthenticated() && resource.data.owner_id == request.auth.uid;
+    }
+
+    // 2. Trip Members Collection
+    match /trip_members/{memberId} {
+      // Allow read if the user is a member of this trip
+      allow read: if isAuthenticated() && isMember(resource.data.trip_id);
+      // FIX: Allow users to create their OWN membership record
+      allow create: if isAuthenticated() && request.resource.data.user_id == request.auth.uid;
+
+      // Allow create/update/delete (usually handled by app logic, but secured here)
+      allow update, delete: if isAuthenticated() && isMember(resource.data.trip_id);
+    }
+
+    // 3. Suggestions Collection
+    match /suggestions/{suggestionId} {
+      // Allow read if user is a member of the associated trip
+      allow read: if isAuthenticated() && isMember(resource.data.trip_id);
+      allow write: if isAuthenticated() && isMember(request.resource.data.trip_id);
+    }
+
+    // 4. Share Links Collection
+    match /share_links/{linkId} {
+      // FIX: Allow querying ('list') so joinViaToken can find the link by token
+      allow read, list: if isAuthenticated();
+
+      // Only members can create share links
+      allow create: if isAuthenticated() && isMember(request.resource.data.trip_id);
+      allow update, delete: if isAuthenticated() && isMember(resource.data.trip_id);
+    }
+  }
+}

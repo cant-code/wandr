@@ -6,7 +6,7 @@ Plan trips. Share the adventure.
 - **Frontend**: React + Vite + Tailwind CSS
 - **Backend**: Firebase (Auth + Firestore + Realtime Listeners)
 - **AI**: Client-side calls to OpenAI / Anthropic / Gemini (user's own keys)
-- **Deploy**: Cloudflare Pages
+- **Deploy**: Firebase Hosting
 
 ## Setup
 
@@ -20,6 +20,7 @@ Plan trips. Share the adventure.
    - The easiest way to create them is to click the links provided in the browser console errors when you first run the app.
    - Alternatively, you can deploy the `firestore.indexes.json` file using the Firebase CLI.
 5. Add a Web App to your project and get the configuration.
+6. **Firebase Hosting**: The project is pre-configured for Firebase Hosting.
 
 ### 2. Environment
 ```bash
@@ -33,15 +34,18 @@ pnpm install
 pnpm dev
 ```
 
-### 4. Deploy to Cloudflare Pages
+### 4. Deploy to Firebase Hosting
 ```bash
+# Install Firebase CLI if you haven't
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Build and deploy
 pnpm run build
+firebase deploy --only hosting
 ```
-Then in Cloudflare Pages:
-- Connect your Git repo
-- Build command: `pnpm run build`
-- Output directory: `dist`
-- Add env vars: `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, etc.
 
 ## Project structure
 ```
@@ -68,11 +72,15 @@ src/
       FlightsPanel.jsx
       HotelsPanel.jsx
       ChatPanel.jsx
-supabase-schema.sql  # Run this in Supabase SQL Editor
 ```
 
 ## Key design decisions
 - **API keys never leave the browser** — stored in localStorage, sent directly to AI provider APIs
-- **No custom backend server** — Supabase handles everything
+- **No custom backend server** — Firebase handles everything
 - **RLS enforced at DB level** — trip data is isolated by membership even if client logic is bypassed
-- **Real-time collaboration** — Supabase Realtime broadcasts suggestion changes to all trip members
+- **Real-time collaboration** — Firebase Realtime broadcasts suggestion changes to all trip members
+
+## Bugs
+- Fix Redirect after login, have to click on login again
+- SSO Login for Gmail
+- Cannot see joined trips in dashboard

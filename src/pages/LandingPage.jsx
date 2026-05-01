@@ -46,7 +46,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-sand">
           {[
             { icon: Sparkles, title: 'AI-generated', desc: 'Places, flights, and hotels suggested by the AI provider of your choice — OpenAI, Anthropic, or Gemini.', color: 'terracotta' },
-            { icon: Users, title: 'Collaborative', desc: 'Share trips with friends or groups. Set view-only or edit permissions. Real-time sync via Supabase.', color: 'ocean' },
+            { icon: Users, title: 'Collaborative', desc: 'Share trips with friends or groups. Set view-only or edit permissions. Real-time sync via Firebase.', color: 'ocean' },
             { icon: Lock, title: 'Your keys, your data', desc: 'API keys never leave your browser. Stored in localStorage only. No vendor lock-in.', color: 'forest' },
           ].map(({ icon: Icon, title, desc, color }) => (
             <div key={title} className="bg-paper p-8 group hover:bg-white transition-colors duration-300">
@@ -63,7 +63,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-sand px-8 py-6 flex items-center justify-between">
         <span className="font-display text-lg italic text-ink/40">Wandr</span>
-        <span className="font-mono text-xs text-ink/30">Built with React + Firebase + Cloudflare Pages</span>
+        <span className="font-mono text-xs text-ink/30">Built with React + Firebase</span>
       </footer>
     </div>
   )

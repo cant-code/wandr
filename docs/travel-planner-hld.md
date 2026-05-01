@@ -148,13 +148,13 @@ Firestore Security Rules are defined in the Firebase Console and enforced at the
 | **Auth** | Firebase Auth | Magic link + Google OAuth, zero custom auth code |
 | **Real-time** | Firestore Listeners | WebSocket-based document/query listeners, built in |
 | **AI providers** | OpenAI / Anthropic / Gemini | User chooses and supplies their own key |
-| **Deployment** | Cloudflare Pages | Edge CDN, no env secrets on host, strong security posture |
+| **Deployment** | Firebase Hosting | Fully integrated with Auth/DB, simplified CI/CD via Firebase CLI |
 
 # **7\. Key Design Decisions**
 
-**Why Cloudflare Pages for deployment?**
+**Why Firebase Hosting for deployment?**
 
-Cloudflare Pages serves static assets from a global edge network (300+ locations) with zero cold starts and no server to maintain. Critically, because all AI keys live in the user's localStorage and Firebase handles all backend concerns, there are no application secrets stored in the deployment platform at all — eliminating the primary risk vector seen in recent platform breaches. Cloudflare's security posture and infrastructure maturity make it the strongest choice for a zero-backend-secret frontend.
+Firebase Hosting provides fast and secure hosting for your web app, static and dynamic content, and microservices. It is fully integrated with other Firebase services like Auth and Firestore, allowing for a seamless developer experience. By using Firebase Hosting, we can manage our entire stack within a single platform, simplifying deployment and configuration.
 
 **Why client-side AI?**
 

@@ -174,7 +174,7 @@ async function callGemini(key, systemPrompt, userPrompt) {
 const JSON_SYSTEM = `You are a knowledgeable travel expert. Always respond with valid JSON only — no markdown, no explanation, no preamble.`
 
 export async function generatePlaces(destination, dates, interests) {
-  const prompt = `Generate 6 must-visit places/attractions for ${destination}.
+  const prompt = `Generate 20 must-visit places/attractions for ${destination}.
 Travel dates: ${dates}
 Traveller interests: ${interests || 'general sightseeing'}
 
