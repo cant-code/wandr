@@ -27,8 +27,11 @@ service cloud.firestore {
 
     // 2. Trip Members Collection
     match /trip_members/{memberId} {
-      // Allow read if the user is a member of this trip
-      allow read: if isAuthenticated() && isMember(resource.data.trip_id);
+      // Allow read/list if the user is the one being queried
+      allow read, list: if isAuthenticated() && (
+        resource.data.user_id == request.auth.uid ||
+        isMember(resource.data.trip_id)
+      );
       // FIX: Allow users to create their OWN membership record
       allow create: if isAuthenticated() && request.resource.data.user_id == request.auth.uid;
 

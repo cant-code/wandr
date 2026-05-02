@@ -83,4 +83,3 @@ src/
 ## Bugs
 - Fix Redirect after login, have to click on login again
 - SSO Login for Gmail
-- Cannot see joined trips in dashboard

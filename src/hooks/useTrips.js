@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react'
-import { 
-  collection, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot, 
-  addDoc, 
-  deleteDoc, 
-  doc, 
-  getDoc, 
+import {useEffect, useState} from 'react'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
   getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
   setDoc,
   updateDoc,
-  serverTimestamp
+  where
 } from 'firebase/firestore'
-import { db } from '../lib/firebase.js'
-import { useAuth } from './useAuth.jsx'
+import {db} from '../lib/firebase.js'
+import {useAuth} from './useAuth.jsx'
 
 export function useTrips() {
   const { user } = useAuth()
@@ -29,19 +29,46 @@ export function useTrips() {
       return
     }
 
-    const q = query(
-      collection(db, 'trips'),
-      where('owner_id', '==', user.uid),
-      orderBy('created_at', 'desc')
+    // First listen to trip_members where the user is a member
+    const qMemb = query(
+      collection(db, 'trip_members'),
+      where('user_id', '==', user.uid)
     )
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const tripsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    const fetchTripDataDoc = (tripSnapshot) => {
+      const tripsData = tripSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+      // Sort by created_at desc manually since we can't orderBy with 'in' easily across multiple docs
+      tripsData.sort((a, b) => (b.created_at?.toMillis?.() || 0) - (a.created_at?.toMillis?.() || 0))
       setTrips(tripsData)
       setLoading(false)
+    }
+
+    const unsubscribeMemb = onSnapshot(qMemb, async (snapshot) => {
+      const tripIds = snapshot.docs.map(doc => doc.data().trip_id)
+
+      if (tripIds.length === 0) {
+        setTrips([])
+        setLoading(false)
+        return
+      }
+
+      // Firestore "in" query limits to 30 items.
+      // For a travel planner, 30 trips might be enough, or we need to chunk it.
+      // Let's implement it for up to 30 for now, as it's a common pattern.
+      // If there are more than 30 trips, we would need multiple queries.
+      // We need to subscribe to all chunks. This is getting complex.
+      // Simplified version: subscribe to changes in the trips collection for these IDs
+      const qTrips = query(
+        collection(db, 'trips'),
+        where('__name__', 'in', tripIds.slice(0, 30))
+      )
+
+      return onSnapshot(qTrips, (tripSnapshot) => {
+        fetchTripDataDoc(tripSnapshot)
+      })
     })
 
-    return () => unsubscribe()
+    return () => unsubscribeMemb()
   }, [user])
 
   const createTrip = async (tripData) => {
